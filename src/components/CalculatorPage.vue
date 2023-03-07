@@ -271,8 +271,8 @@ function validateInput(input) {
     width: 100%;
 
     .display-area__history :deep(.v-field__input) {
-      font-size: 1.5rem;
-      text-align: right;
+      font-size: 1rem;
+      padding: 0;
     }
 
     .display-area__input :deep(.v-field__input) {
