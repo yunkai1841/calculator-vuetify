@@ -4,12 +4,26 @@
     <v-col cols="12" class="display-area">
       <v-row>
         <v-col cols="12">
-          <v-text-field variant="plain" v-model="history" class="display-area__history" readonly></v-text-field>
+          <v-text-field
+            variant="plain"
+            hide-details="auto"
+            v-model="history"
+            class="display-area__history"
+            readonly
+          />
         </v-col>
       </v-row>
       <v-row>
         <v-col cols="12">
-          <v-text-field variant="outlined" v-model="input" class="display-area__input" readonly></v-text-field>
+          <v-text-field
+            variant="outlined"
+            hide-details="auto"
+            v-model="input"
+            :error="!validateInput(input)"
+            :error-messages="validateInput(input) ? [] : ['Invalid input']"
+            class="display-area__input"
+            readonly
+          />
         </v-col>
       </v-row>
     </v-col>
@@ -37,13 +51,19 @@
       </v-row>
       <v-row>
         <v-col cols="3">
-          <custom-button class="buttons-area__button" @click="addNumber(7)">7</custom-button>
+          <custom-button class="buttons-area__button" :color="numberColor" @click="addNumber(7)">
+            7
+          </custom-button>
         </v-col>
         <v-col cols="3">
-          <custom-button class="buttons-area__button" @click="addNumber(8)">8</custom-button>
+          <custom-button class="buttons-area__button" :color="numberColor" @click="addNumber(8)">
+            8
+          </custom-button>
         </v-col>
         <v-col cols="3">
-          <custom-button class="buttons-area__button" @click="addNumber(9)">9</custom-button>
+          <custom-button class="buttons-area__button" :color="numberColor" @click="addNumber(9)">
+            9
+          </custom-button>
         </v-col>
         <v-col cols="3">
           <custom-button class="buttons-area__button" @click="addOperation('*')">
@@ -53,13 +73,19 @@
       </v-row>
       <v-row>
         <v-col cols="3">
-          <custom-button class="buttons-area__button" @click="addNumber(4)">4</custom-button>
+          <custom-button class="buttons-area__button" :color="numberColor" @click="addNumber(4)">
+            4
+          </custom-button>
         </v-col>
         <v-col cols="3">
-          <custom-button class="buttons-area__button" @click="addNumber(5)">5</custom-button>
+          <custom-button class="buttons-area__button" :color="numberColor" @click="addNumber(5)">
+            5
+          </custom-button>
         </v-col>
         <v-col cols="3">
-          <custom-button class="buttons-area__button" @click="addNumber(6)">6</custom-button>
+          <custom-button class="buttons-area__button" :color="numberColor" @click="addNumber(6)">
+            6
+          </custom-button>
         </v-col>
         <v-col cols="3">
           <custom-button class="buttons-area__button" @click="addOperation('-')">
@@ -69,13 +95,19 @@
       </v-row>
       <v-row>
         <v-col cols="3">
-          <custom-button class="buttons-area__button" @click="addNumber(1)">1</custom-button>
+          <custom-button class="buttons-area__button" :color="numberColor" @click="addNumber(1)">
+            1
+          </custom-button>
         </v-col>
         <v-col cols="3">
-          <custom-button class="buttons-area__button" @click="addNumber(2)">2</custom-button>
+          <custom-button class="buttons-area__button" :color="numberColor" @click="addNumber(2)">
+            2
+          </custom-button>
         </v-col>
         <v-col cols="3">
-          <custom-button class="buttons-area__button" @click="addNumber(3)">3</custom-button>
+          <custom-button class="buttons-area__button" :color="numberColor" @click="addNumber(3)">
+            3
+          </custom-button>
         </v-col>
         <v-col cols="3">
           <custom-button class="buttons-area__button" @click="addOperation('+')">
@@ -85,7 +117,9 @@
       </v-row>
       <v-row>
         <v-col cols="6">
-          <custom-button class="buttons-area__button" @click="addNumber(0)" :width="2">0</custom-button>
+          <custom-button class="buttons-area__button" :color="numberColor" @click="addNumber(0)" :width="2">
+            0
+          </custom-button>
         </v-col>
         <v-col cols="3">
           <custom-button class="buttons-area__button" @click="addNumber('.')">.</custom-button>
@@ -103,6 +137,8 @@
 <script setup>
 import CustomButton from "./CustomButton.vue";
 import { ref } from "vue";
+
+const numberColor = "amber";
 
 const input = ref("");
 const history = ref("");
@@ -145,6 +181,9 @@ function hasOperation(input) {
 }
 
 const equals = () => {
+  if (!validateInput(input.value)) {
+    return;
+  }
   history.value = input.value;
   input.value = parser(input.value).toString();
 };
@@ -213,6 +252,12 @@ function operate(operation, a, b) {
   }
 }
 
+function validateInput(input) {
+  // 0-9+*/.-のみ
+  const regex = /^[0-9+*/.-]+$/;
+  return input === "" || regex.test(input);
+}
+
 </script>
 
 <style lang="scss" scoped>
@@ -220,6 +265,7 @@ function operate(operation, a, b) {
   align-items: center;
   height: 100%;
   width: fit-content;
+  margin: 0 auto;
 
   .display-area {
     width: 100%;

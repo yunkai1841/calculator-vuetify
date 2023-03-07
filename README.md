@@ -1,4 +1,16 @@
-# essentials
+# calculator-vuetify
+
+This is a simple calculator made with Vue.js and Vuetify.
+
+## Demo
+
+[DEMO]
+
+## Environment
+
+vue3 + vuetify3 + javascript
+
+## Compile
 
 ## Project setup
 
@@ -55,3 +67,6 @@ pnpm lint
 ### Customize configuration
 
 See [Configuration Reference](https://vitejs.dev/config/).
+
+
+[DEMO]: https://yunkai1841.github.io/calculator-vuetify/
