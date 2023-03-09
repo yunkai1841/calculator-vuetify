@@ -122,7 +122,7 @@
           </custom-button>
         </v-col>
         <v-col cols="3">
-          <custom-button class="buttons-area__button" @click="addNumber('.')">.</custom-button>
+          <custom-button class="buttons-area__button" @click="decimal">.</custom-button>
         </v-col>
         <v-col cols="3">
           <custom-button class="buttons-area__button" @click="equals">
@@ -163,6 +163,15 @@ const addOperation = (operation) => {
   input.value += operation;
 };
 
+const decimal = () => {
+  const lastNumber = input.value.split(/\+|-|\/|\*/).reverse()[0]
+  if (lastNumber === "") {
+    input.value += "0.";
+  } else if (!lastNumber.includes(".")) {
+    input.value += ".";
+  }
+};
+
 const plusMinus = () => {
   if (hasOperation(input.value)) {
     equals();
@@ -201,17 +210,17 @@ function parser(input) {
 
   for (let i = 0; i < input.length; i++) {
     const char = input[i];
-    if (isNumber(char)) {
+    if (isNumber(char) || char === ".") {
       if (minusFlag && currentNumber === "") {
         currentNumber = "-";
         minusFlag = false;
       }
       currentNumber += char;
-    } else if (isOperation(char)) {
+    } else if(isOperation(char)) {
       if (currentOperation === null) {
-        result = parseInt(currentNumber);
+        result = parseFloat(currentNumber);
       } else {
-        result = operate(currentOperation, result, parseInt(currentNumber));
+        result = operate(currentOperation, result, parseFloat(currentNumber));
       }
       currentOperation = char;
       currentNumber = "";
@@ -220,9 +229,9 @@ function parser(input) {
   // 最後の数字を計算に含める
   // オペレーターがない場合は、最初の数字のみ
   if (currentOperation === null) {
-    result = parseInt(currentNumber);
+    result = parseFloat(currentNumber);
   } else if (currentNumber !== "") {
-    result = operate(currentOperation, result, parseInt(currentNumber));
+    result = operate(currentOperation, result, parseFloat(currentNumber));
   }
   return result;
 }
