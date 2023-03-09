@@ -233,7 +233,8 @@ function parser(input) {
   } else if (currentNumber !== "") {
     result = operate(currentOperation, result, parseFloat(currentNumber));
   }
-  return result;
+  // 小数点以下5桁まで
+  return result.toFixed(5);
 }
 
 function isNumber(char) {
