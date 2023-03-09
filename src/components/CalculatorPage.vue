@@ -234,7 +234,8 @@ function parser(input) {
     result = operate(currentOperation, result, parseFloat(currentNumber));
   }
   // 小数点以下5桁まで
-  return result.toFixed(5);
+  // 0を削除
+  return result.toFixed(5).replace(/\.?0+$/, "");
 }
 
 function isNumber(char) {
